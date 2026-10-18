@@ -15,7 +15,7 @@ Static, no-build PWA hub (HTML/CSS/JS):
 2. Add an entry to `DASH_APPS` in `apps.js` (optional `widget(el)` for a live tile).
 3. Optionally add its files to `PRE` in `sw.js` for offline use.
 
-Live: Live: https://jsal1218.github.io/ironman-tracker/
+Live: https://jsal1218.github.io/s001/
 
 ## Deploying
 Just `git commit` and `git push` to `main` (GitHub Pages serves the branch root).
