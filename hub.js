@@ -8,7 +8,7 @@ try{if(!localStorage.getItem('dash-nf-removed')){Object.keys(localStorage).filte
  else localStorage.setItem('dash-nf-removed','1')}}catch(e){}
 // theme toggle: auto -> light -> dark
 const tb=$('#theme'),cur=()=>localStorage.getItem('dash-theme')||'auto';
-const paintT=()=>{const t=cur(),dark=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);tb.innerHTML=I(dark?'moon':'sun');tb.setAttribute('aria-label',`Theme: ${t}. Tap to change`);document.querySelector('meta[name=theme-color]').content=dark?'#0b1612':'#f6f4ee'};
+const paintT=()=>{const t=cur(),dark=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);tb.innerHTML=I(dark?'moon':'sun');tb.setAttribute('aria-label',`Theme: ${t}. Tap to change`);document.querySelector('meta[name=theme-color]').content='#D62828'};
 tb.onclick=()=>{const n={auto:'light',light:'dark',dark:'auto'}[cur()];localStorage.setItem('dash-theme',n);n==='auto'?delete document.documentElement.dataset.theme:document.documentElement.dataset.theme=n;paintT()};paintT();
 const h=new Date().getHours();$('#greet').textContent=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
 $('#today').innerHTML=I('calendar','sm')+' '+new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});

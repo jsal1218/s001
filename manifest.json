@@ -1,2 +1,2 @@
-{"name":"Dash","short_name":"Dash","id":"./","description":"Personal dashboard: live basketball scores and quick games.","start_url":"./","scope":"./","display":"standalone","background_color":"#f6f4ee","theme_color":"#0b6e4f",
+{"name":"S001","short_name":"S001","id":"./","description":"Personal dashboard: live basketball scores and quick games.","start_url":"./","scope":"./","display":"standalone","background_color":"#D62828","theme_color":"#D62828",
 "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}

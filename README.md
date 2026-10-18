@@ -1,4 +1,4 @@
-# Dash — personal dashboard
+# S001 — personal dashboard
 
 Static, no-build PWA hub (HTML/CSS/JS):
 
