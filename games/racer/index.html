@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Highway Rush — weave through highway traffic</title><meta name="description" content="Highway Rush: race down a four-lane highway, weave through cars and trucks, and chain close passes. Gas and brake pedals, tilt or touch steering, full screen.">
+<title>Highway Rush — weave through highway traffic</title><meta name="description" content="Highway Rush: race a 3D four-lane highway, weave through cars and trucks, and chain close passes. Gas and brake pedals, tilt or touch steering, full screen.">
 <meta name="theme-color" content="#0b1a12"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="icon" type="image/svg+xml" href="../../icons/racer.svg"><link rel="apple-touch-icon" href="../../icons/games-192.png">
+<link rel="icon" type="image/svg+xml" href="../../icons/racer.svg"><link rel="modulepreload" href="lib/three-racer.js"><link rel="apple-touch-icon" href="../../icons/games-192.png">
 <script src="../../shared/theme.js"></script><link rel="stylesheet" href="../games.css">
 <style>
 html,body{margin:0;height:100%;overflow:hidden;background:#0b1a12;color:#fff;overscroll-behavior:none;touch-action:none;position:fixed;inset:0;width:100%}
@@ -63,7 +63,9 @@ body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 <div class="scr" id="settings" hidden><div class="card"><h2>Settings</h2><div class="set">
  <span>Steering</span><div class="row"><button class="btn" data-steer="tilt">Tilt</button><button class="btn" data-steer="touch">Touch</button><button class="btn" id="calBtn">Calibrate</button></div>
  <span>Gas</span><div class="row"><button class="btn" data-auto="0">Manual</button><button class="btn" data-auto="1">Auto</button></div>
- <span>Sound</span><div class="row"><button class="btn" data-snd="1">On</button><button class="btn" data-snd="0">Off</button></div></div>
+ <span>Sound</span><div class="row"><button class="btn" data-snd="1">On</button><button class="btn" data-snd="0">Off</button></div>
+ <span>Graphics</span><div class="row"><button class="btn" data-gfx="high">High</button><button class="btn" data-gfx="medium">Medium</button><button class="btn" data-gfx="low">Low</button></div>
+ <span>Auto adjust</span><div class="row"><button class="btn" data-aq="1">On</button><button class="btn" data-aq="0">Off</button></div></div>
  <p id="calNote" style="font-size:.8rem;margin-top:10px">Tilt: hold the phone how you like to play, then tap Calibrate.</p>
  <div class="row"><button class="btn go" id="setDone">Done</button></div></div></div>
 <div class="scr" id="pauseScr" hidden><div class="card"><h2>Paused</h2><div class="row"><button class="btn go" id="resume">Resume</button></div><div class="row"><button class="btn" id="pRestart">Restart</button><button class="btn" id="pSet">Settings</button><button class="btn" id="pMenu">Menu</button></div></div></div>
@@ -72,4 +74,4 @@ body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 <div class="scr" id="tip" hidden><div class="card"><h2>Play full screen</h2><p>iPhone Safari can't make a web page full screen. For the full-screen game, tap <b>Share</b> then <b>Add to Home Screen</b> to install S001, then open it from your Home Screen.</p><div class="row"><button class="btn go" id="tipOk">Got it</button></div></div></div>
 <div id="rotate"><div class="ph"></div><b>Rotate your phone</b><span style="color:#cfe3d8">Highway Rush plays in landscape.</span></div>
 <div id="toast" hidden></div>
-<script src="../../shared/update.js" defer></script><script src="../common.js" defer></script><script src="racer.js" defer></script></body></html>
+<script src="../../shared/update.js" defer></script><script src="../common.js" defer></script><script type="module" src="racer.js"></script></body></html>
