@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chess — play the computer from Beginner to Grandmaster</title><meta name="description" content="Chess: play the computer at seven levels from Beginner (400) to Grandmaster (2500). Tap to move, undo, works offline.">
+<meta name="theme-color" content="#07150f"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" type="image/svg+xml" href="../../icons/chess.svg"><link rel="apple-touch-icon" href="../../icons/games-192.png">
+<script src="../../shared/theme.js"></script><link rel="stylesheet" href="../games.css">
+<style>
+body{background:#07150f;color:#f3f1e8}
+:root,:root[data-theme]{color-scheme:dark;--card:#11281f;--line:#24463a;--text:#f3f1e8;--muted:#b9cfc4;--focus:#e9c86a;--acc:#2fb582;--on-acc:#05140e;--gold-text:#e9c86a}
+.gbar a{color:#e9c86a}
+.sc b.small{font-size:.92rem;line-height:1.9rem;white-space:nowrap}
+.stage{width:min(94vw,480px,calc(100vh - 270px));min-width:280px;container-type:inline-size;aspect-ratio:1;border-radius:14px;padding:0;overflow:hidden;border:3px solid #24463a;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;height:100%}
+.sq{position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sq.l{background:#ebe4cc}.sq.d{background:#5e8c71}
+.sq.last.l{background:#f1dc8a}.sq.last.d{background:#a9b75a}
+.sq.sel{box-shadow:inset 0 0 0 4px #e9c86a}
+.sq.chk{background:radial-gradient(circle,#ff6b5b 0,#d62828 45%,transparent 75%)}
+.pc{font-family:"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",serif;font-size:34px;font-size:10.2cqw;line-height:1;pointer-events:none;transform:translateY(-3%)}
+.pc.w{color:#fffdf5;-webkit-text-stroke:1.4px #1c2a22;text-shadow:0 2px 2px rgba(0,0,0,.35)}
+.pc.b{color:#16211b;-webkit-text-stroke:.6px #000;text-shadow:0 1px 1px rgba(255,255,255,.25)}
+.dot{position:absolute;width:30%;height:30%;border-radius:50%;background:rgba(10,40,28,.38);pointer-events:none}
+.ring{position:absolute;inset:6%;border-radius:50%;border:5px solid rgba(10,40,28,.38);pointer-events:none}
+.co{position:absolute;font-size:10px;font-weight:700;opacity:.75;pointer-events:none}.co.f{right:3px;bottom:1px}.co.r{left:3px;top:1px}
+.sq.l .co{color:#5e8c71}.sq.d .co{color:#ebe4cc}
+#status{text-align:center;min-height:1.5em;margin:10px 12px 0;font-weight:700}
+.tools{display:flex;justify-content:center;gap:10px;padding:10px 12px}
+.tools .gbtn{padding:0 16px;font-size:.95rem}.gbtn:disabled{opacity:.45}
+.setup label{display:block;text-align:left;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 4px}
+.setup select{width:100%;font:inherit;font-size:1rem;min-height:44px;border-radius:12px;border:1px solid var(--line);background:#0b1e17;color:var(--text);padding:0 10px}
+.seg{display:flex;gap:6px}.seg .gbtn{flex:1;font-size:.95rem}.seg .gbtn[aria-pressed=true]{background:var(--acc);color:var(--on-acc);border-color:transparent;font-weight:700}
+.setup .row{display:flex;gap:8px;margin-top:16px}.setup .row button{flex:1}.setup .row [hidden]{display:none}
+.promo{display:flex;gap:6px;justify-content:center}.promo .gbtn{width:56px;height:56px}.promo .pc{font-size:40px}
+</style></head>
+<body data-game="chess">
+<header class="gbar"><a href="../" aria-label="Back to Games"><svg class="i" aria-hidden="true"><use href="../../shared/icons.svg#back"/></svg>Games</a><h1><img src="../../icons/chess.svg" alt="" width="28" height="28">Chess</h1><button class="gbtn" id="sound"></button></header>
+<div class="scores"><div class="sc"><span>Level</span><b class="small" id="lvl">–</b></div><div class="sc"><span>Best</span><b class="small" id="best">–</b></div></div>
+<main><div class="stage"><div id="board" role="grid" aria-label="Chess board. Tap a piece, then tap a square."></div>
+<div class="overlay" id="setup" hidden><div class="panel setup"><h2>New game</h2>
+<label for="level">Level</label><select id="level"></select>
+<label>Play as</label><div class="seg" id="side"><button class="gbtn" data-s="w">White</button><button class="gbtn" data-s="b">Black</button><button class="gbtn" data-s="r">Random</button></div>
+<div class="row"><button class="gbtn" id="cancel">Cancel</button><button class="play" id="start">Start</button></div></div></div>
+<div class="overlay" id="promo" hidden><div class="panel"><h2>Promote to</h2><div class="promo" id="promoBtns"></div></div></div></div>
+<p id="status" aria-live="polite">Loading…</p>
+<div class="tools"><button class="gbtn" id="undo"><svg class="i" aria-hidden="true"><use href="../../shared/icons.svg#undo"/></svg>Undo</button><button class="gbtn" id="newBtn"><svg class="i" aria-hidden="true"><use href="../../shared/icons.svg#restart"/></svg>New game</button></div>
+<p class="hint">Tap a piece, then a square. The computer runs Stockfish on your device. Your game is saved if you leave.</p></main>
+<script src="../../shared/update.js" defer></script><script src="../common.js" defer></script><script src="rules.js" defer></script><script src="chess.js" defer></script></body></html>

@@ -11,6 +11,7 @@ window.DASH_APPS=[
  {id:'reef',name:'Reef Swap',path:'games/reef/',icon:'icons/reef.svg',parent:'games'},
  {id:'firefly',name:'Firefly Trail',path:'games/firefly/',icon:'icons/firefly.svg',parent:'games'},
  {id:'prism',name:'Prism Paddle',path:'games/prism/',icon:'icons/prism.svg',parent:'games'},
+ {id:'chess',name:'Chess',path:'games/chess/',icon:'icons/chess.svg',parent:'games'},
 ];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function gamesWidget(el){const I=DASH_ICON,L=DASH_APPS.filter(a=>a.parent==='games'),by=Object.fromEntries(L.map(a=>[a.id,a])),bs=id=>+localStorage.getItem('dash-games-'+id+'-best')||0;
