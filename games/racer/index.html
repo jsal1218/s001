@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Highway Rush — weave through highway traffic</title><meta name="description" content="Highway Rush: race down a four-lane highway, weave through cars and trucks, and chain close passes. Gas and brake pedals, tilt or touch steering, full screen.">
+<meta name="theme-color" content="#0b1a12"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/svg+xml" href="../../icons/racer.svg"><link rel="apple-touch-icon" href="../../icons/games-192.png">
+<script src="../../shared/theme.js"></script><link rel="stylesheet" href="../games.css">
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#0b1a12;color:#fff;overscroll-behavior:none;touch-action:none;position:fixed;inset:0;width:100%}
+body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hud{position:fixed;top:max(8px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));display:flex;align-items:flex-start;gap:8px;pointer-events:none;z-index:5}
+.hud[hidden]{display:none}
+.pill{background:rgba(8,20,14,.55);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:3px 12px;text-align:left;min-width:84px}
+.pill span{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#cfe3d8;font-weight:700}
+.pill b{font-size:1.25rem;color:#ffd84a;font-variant-numeric:tabular-nums;line-height:1.2}.pill b small{font-size:.65rem;color:#fff;margin-left:3px}
+.hud .sp{margin-left:auto}
+#pauseBtn{pointer-events:auto;min-width:44px;min-height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(8,20,14,.55);color:#fff;display:flex;align-items:center;justify-content:center}
+#combo{position:fixed;left:50%;top:22%;transform:translateX(-50%);font-weight:900;font-size:1.6rem;color:#ffd84a;text-shadow:0 2px 6px rgba(0,0,0,.6);pointer-events:none;z-index:5;opacity:0;transition:opacity .25s}
+#combo.on{opacity:1}
+.ctl{position:fixed;z-index:6;touch-action:none;display:flex;align-items:center;justify-content:center;font-weight:800;letter-spacing:.08em;font-size:.8rem;color:#fff;border:2px solid rgba(255,255,255,.35);-webkit-user-select:none;user-select:none}
+.ctl[hidden]{display:none}
+.pedal{bottom:max(12px,env(safe-area-inset-bottom));width:88px;height:118px;border-radius:16px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 6px,rgba(255,255,255,.04) 6px 14px),rgba(20,30,26,.55);flex-direction:column;gap:4px}
+#brake{left:max(14px,calc(env(safe-area-inset-left) + 6px));height:96px;width:96px}
+#gas{right:max(14px,calc(env(safe-area-inset-right) + 6px))}
+.ctl.on{background-color:rgba(255,216,74,.45);border-color:#ffd84a;transform:scale(.96)}
+.steer{bottom:max(18px,calc(env(safe-area-inset-bottom) + 6px));width:76px;height:76px;border-radius:50%;background:rgba(20,30,26,.5);font-size:1.6rem}
+#left{left:calc(max(14px,calc(env(safe-area-inset-left) + 6px)) + 108px)}#right{right:calc(max(14px,calc(env(safe-area-inset-right) + 6px)) + 100px)}
+.scr{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:rgba(6,16,11,.55);padding:max(10px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.scr[hidden]{display:none}
+.card{background:rgba(14,32,24,.92);border:1px solid rgba(255,255,255,.14);border-top:4px solid #ffd84a;border-radius:20px;padding:16px 22px;text-align:center;max-width:560px;width:100%;max-height:100%;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card h2{margin:0 0 4px;font-size:1.7rem;letter-spacing:-.01em}.card h2 em{font-style:normal;color:#ffd84a}
+.card p{margin:4px 0;color:#cfe3d8}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.btn{font:inherit;font-weight:700;min-height:46px;padding:0 20px;border-radius:99px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+.btn.go{background:#ffd84a;color:#1c1500;border-color:transparent;font-size:1.1rem;padding:0 34px}
+.btn[aria-pressed=true]{background:#2fb582;color:#04140d;border-color:transparent}
+.btn:disabled{opacity:.4}
+.set{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;text-align:left;margin-top:10px}.set>span{font-weight:700;color:#cfe3d8;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+.set .row{margin:0;justify-content:flex-start}.set .btn{min-height:40px;padding:0 14px}
+.sw{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer}.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 3px #ffd84a}
+.res{display:grid;grid-template-columns:1fr auto auto;gap:4px 16px;margin:10px auto 0;max-width:380px;text-align:left;font-variant-numeric:tabular-nums}.res b{color:#ffd84a;text-align:right}.res i{font-style:normal;text-align:right;color:#fff}
+.big{font-size:2.4rem;font-weight:900;color:#ffd84a;line-height:1.1}
+.back{position:fixed;z-index:11;top:max(8px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));color:#ffd84a;font-weight:700;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;gap:2px}
+.back[hidden]{display:none}
+#rotate{display:none;position:fixed;inset:0;z-index:30;background:#0b1a12;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px}
+#rotate .ph{width:54px;height:92px;border:4px solid #ffd84a;border-radius:12px;animation:rot 1.6s ease-in-out infinite}
+@keyframes rot{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+@media (orientation:portrait){#rotate{display:flex}}
+#toast{position:fixed;left:50%;top:max(60px,calc(env(safe-area-inset-top) + 52px));transform:translateX(-50%);z-index:40;background:#ffd84a;color:#1c1500;font-weight:700;padding:8px 16px;border-radius:99px;pointer-events:none;max-width:90vw;text-align:center}
+#toast[hidden]{display:none}
+</style></head>
+<body data-game="racer">
+<canvas id="cv"></canvas>
+<div class="hud" id="hud" hidden><div class="pill"><span>Score</span><b id="hScore">0</b></div><div class="pill sp"><span>Speed</span><b id="hSpeed">0<small>MPH</small></b></div><div class="pill"><span>Distance</span><b id="hDist">0.00<small>MI</small></b></div><button id="pauseBtn" aria-label="Pause"><svg class="i" aria-hidden="true"><use href="../../shared/icons.svg#pause"/></svg></button></div>
+<div id="combo"></div>
+<div class="ctl pedal" id="brake" hidden aria-label="Brake">BRAKE</div><div class="ctl pedal" id="gas" hidden aria-label="Gas">GAS</div>
+<div class="ctl steer" id="left" hidden aria-label="Steer left">&#9664;&#xFE0E;</div><div class="ctl steer" id="right" hidden aria-label="Steer right">&#9654;&#xFE0E;</div>
+<a class="back" id="back" href="../" aria-label="Back to Games"><svg class="i" aria-hidden="true"><use href="../../shared/icons.svg#back"/></svg>Games</a>
+<div class="scr" id="menu"><div class="card"><h2>Highway <em>Rush</em></h2><p id="mBest">Weave through traffic. Pass close for bonus points.</p>
+ <div class="row" id="colors" aria-label="Car color"></div>
+ <div class="row"><button class="btn go" id="play">Play</button></div>
+ <div class="row"><button class="btn" id="setBtn">Settings</button><button class="btn" id="fsBtn">Full screen</button></div></div></div>
+<div class="scr" id="settings" hidden><div class="card"><h2>Settings</h2><div class="set">
+ <span>Steering</span><div class="row"><button class="btn" data-steer="tilt">Tilt</button><button class="btn" data-steer="touch">Touch</button><button class="btn" id="calBtn">Calibrate</button></div>
+ <span>Gas</span><div class="row"><button class="btn" data-auto="0">Manual</button><button class="btn" data-auto="1">Auto</button></div>
+ <span>Sound</span><div class="row"><button class="btn" data-snd="1">On</button><button class="btn" data-snd="0">Off</button></div></div>
+ <p id="calNote" style="font-size:.8rem;margin-top:10px">Tilt: hold the phone how you like to play, then tap Calibrate.</p>
+ <div class="row"><button class="btn go" id="setDone">Done</button></div></div></div>
+<div class="scr" id="pauseScr" hidden><div class="card"><h2>Paused</h2><div class="row"><button class="btn go" id="resume">Resume</button></div><div class="row"><button class="btn" id="pRestart">Restart</button><button class="btn" id="pSet">Settings</button><button class="btn" id="pMenu">Menu</button></div></div></div>
+<div class="scr" id="results" hidden><div class="card"><p style="font-weight:800;letter-spacing:.1em;text-transform:uppercase">Crashed! Your score</p><div class="big" id="rScore">0</div><p id="rBest"></p>
+ <div class="res" id="rRows"></div><div class="row"><button class="btn" id="rMenu">Menu</button><button class="btn go" id="rRestart">Restart</button></div></div></div>
+<div class="scr" id="tip" hidden><div class="card"><h2>Play full screen</h2><p>iPhone Safari can't make a web page full screen. For the full-screen game, tap <b>Share</b> then <b>Add to Home Screen</b> to install S001, then open it from your Home Screen.</p><div class="row"><button class="btn go" id="tipOk">Got it</button></div></div></div>
+<div id="rotate"><div class="ph"></div><b>Rotate your phone</b><span style="color:#cfe3d8">Highway Rush plays in landscape.</span></div>
+<div id="toast" hidden></div>
+<script src="../../shared/update.js" defer></script><script src="../common.js" defer></script><script src="racer.js" defer></script></body></html>
