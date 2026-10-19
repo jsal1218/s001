@@ -5,7 +5,6 @@ window.DASH_APPS=[
  {id:'nba',name:'DashHoops',tagline:'Live pro basketball scores',path:'nba/',icon:'icons/hoops.svg',widget:nbaWidget,widgetTitle:'Tonight’s games'},
  {id:'games',name:'Dash Games',tagline:'Quick single-player games',path:'games/',icon:'icons/games.svg',widget:gamesWidget,widgetTitle:'Your games'},
  {id:'orbit',name:'Orbit Merge',path:'games/orbit/',icon:'icons/orbit.svg',parent:'games'},
- {id:'pilot',name:'Paper Pilot',path:'games/pilot/',icon:'icons/pilot.svg',parent:'games'},
  {id:'bloom',name:'Bloom Blocks',path:'games/bloom/',icon:'icons/bloom.svg',parent:'games'},
  {id:'lantern',name:'Lantern Swipe',path:'games/lantern/',icon:'icons/lantern.svg',parent:'games'},
  {id:'summit',name:'Summit Stack',path:'games/summit/',icon:'icons/summit.svg',parent:'games'},
@@ -17,7 +16,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 function gamesWidget(el){const I=DASH_ICON,L=DASH_APPS.filter(a=>a.parent==='games'),by=Object.fromEntries(L.map(a=>[a.id,a])),bs=id=>+localStorage.getItem('dash-games-'+id+'-best')||0;
  let rec=[];try{rec=JSON.parse(localStorage.getItem('dash-games-recent')||'[]').filter(i=>by[i])}catch(e){}
  let label='Recently played',pick=rec.slice(0,4);if(!pick.length){pick=L.map(a=>a.id).filter(bs).sort((p,q)=>bs(q)-bs(p)).slice(0,4);label='Top scores'}
- if(pick.length<4){for(const id of['orbit','reef','bloom','pilot'])if(pick.length<4&&!pick.includes(id)&&by[id])pick.push(id);if(!rec.length&&!L.some(a=>bs(a.id)))label='Try these'}
+ if(pick.length<4){for(const id of['orbit','reef','bloom','summit'])if(pick.length<4&&!pick.includes(id)&&by[id])pick.push(id);if(!rec.length&&!L.some(a=>bs(a.id)))label='Try these'}
  el.innerHTML=`<p class="glab">${label}</p><ul class="glist">${pick.filter(id=>by[id]).map(id=>{const a=by[id],b=bs(id);return`<li><a href="${a.path}"><img src="${a.icon}" width="38" height="38" alt=""><span class="gn"><b>${esc(a.name)}</b><small>${b?`${I('trophy','sm')} ${b.toLocaleString()}`:'Not played yet'}</small></span></a></li>`}).join('')}</ul><a class="gcta" href="games/">${I('play','sm')} See all ${L.length} games</a>`}
 function nbaWidget(el){let timer;const I=DASH_ICON,ymd=d=>`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
  const tm=iso=>new Date(iso).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
